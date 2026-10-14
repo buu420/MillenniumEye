@@ -43,8 +43,8 @@ GitHub CLI and AMM Author CLI 0.30.0.
 
 ## Task 3: Publication
 
-- [ ] Review source, package boundaries and migration behavior independently.
-- [ ] Create buu420/MillenniumEye, push source and v0.1.0, and publish a GitHub prerelease.
-- [ ] Verify anonymous downloads against the local assets.
-- [ ] Add only the new Master Duel beta record to the refreshed buu420 catalog.
-- [ ] Publish, verify the live index and directory submission, and record the evidence and limits.
+- [x] Review source, package boundaries and migration behavior independently.
+- [x] Create buu420/MillenniumEye, push source and v0.1.0, and publish a GitHub prerelease.
+- [x] Verify anonymous downloads against the local assets.
+- [x] Add only the new Master Duel beta record to the refreshed buu420 catalog.
+- [x] Publish, verify the live index and directory submission, and record the evidence and limits.

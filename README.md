@@ -59,6 +59,9 @@ MelonLoader and its runtime. It includes Tolk, the NVDA controller client and
 SDL3. Its read-only pre-install script checks the game and conflicts; the
 manager handles file replacements, backups and uninstall receipts.
 
+If BlindDuel is registered as installed in the manager, uninstall that entry
+before installing Millennium Eye from the Buu420 source.
+
 For the standalone ZIP:
 
 1. Close Master Duel and install the prerequisites above. The
