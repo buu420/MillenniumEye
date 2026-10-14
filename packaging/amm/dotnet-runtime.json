@@ -1,0 +1,26 @@
+{
+  "id": "dotnet-6-desktop-x64",
+  "type": "system",
+  "required": true,
+  "minVersion": "6.0.36",
+  "targetPlatforms": [
+    "windows"
+  ],
+  "check": {
+    "registryKey": "SOFTWARE\\dotnet\\Setup\\InstalledVersions\\x64\\sharedfx\\Microsoft.WindowsDesktop.App",
+    "registryValue": "6.0.36"
+  },
+  "fix": {
+    "downloadUrl": "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/6.0.36/windowsdesktop-runtime-6.0.36-win-x64.exe",
+    "autoInstall": {
+      "kind": "runInstaller",
+      "sha256": "0d20debb26fc8b2bc84f25fbd9d4596a6364af8517ebf012e8b871127b798941",
+      "args": [
+        "/install",
+        "/quiet",
+        "/norestart"
+      ],
+      "needsAdmin": true
+    }
+  }
+}

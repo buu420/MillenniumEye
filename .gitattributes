@@ -1,0 +1,11 @@
+* text=auto
+*.cs text eol=lf
+*.csproj text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.ps1 text eol=crlf
+# Retain the tested managed recovery and verbatim upstream license formatting.
+src/MillenniumEye/BlindDuel/*.cs whitespace=-trailing-space,-blank-at-eof
+LICENSE whitespace=-trailing-space,-blank-at-eof
+COPYING whitespace=-trailing-space,-blank-at-eof
+third-party/licenses/* whitespace=-trailing-space,-blank-at-eof

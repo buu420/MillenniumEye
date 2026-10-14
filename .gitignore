@@ -1,0 +1,15 @@
+**/bin/
+**/obj/
+.vs/
+.superpowers/
+artifacts/
+*.user
+*.log
+*.dll
+*.exe
+*.pdb
+*.zip
+LocalSave/
+UserData/
+MelonLoader/
+GameAssembly.dll

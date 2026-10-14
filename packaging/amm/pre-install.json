@@ -1,0 +1,11 @@
+{
+  "executable": "files/Manager-PreInstall.ps1",
+  "what": "Validate the package and supported game build, require the game to be closed, and detect duplicate or unrecognized readers and shared libraries.",
+  "why": "Prevent two accessibility readers from loading together and avoid replacing files owned by an unknown mod.",
+  "modifies": "No files or settings. Reads only the selected game folder and the verified package staging folder.",
+  "needsAdmin": false,
+  "failureFatal": true,
+  "runOnUpdate": true,
+  "installToGameFolder": false,
+  "runFromGameFolder": false
+}

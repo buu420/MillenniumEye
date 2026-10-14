@@ -1,0 +1,19 @@
+{
+  "id": "melonloader",
+  "type": "framework",
+  "required": true,
+  "targetPlatforms": [
+    "windows"
+  ],
+  "check": {
+    "filePath": "version.dll"
+  },
+  "fix": {
+    "downloadUrl": "https://github.com/LavaGang/MelonLoader/releases/download/v0.7.2/MelonLoader.x64.zip",
+    "autoInstall": {
+      "kind": "extractZip",
+      "sha256": "5cedb66dc5595de19fd4dd6b4c178440da293c6d7f511e14bdf0fea407c9a1f7",
+      "targetDir": "."
+    }
+  }
+}

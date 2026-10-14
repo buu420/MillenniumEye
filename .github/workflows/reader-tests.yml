@@ -1,0 +1,15 @@
+name: Reader checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  reader:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - run: dotnet run --project tests/ReaderTests/ReaderTests.csproj -c Release
+      - shell: pwsh
+        run: ./tests/Install.Tests.ps1

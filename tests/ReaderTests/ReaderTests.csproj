@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\src\MillenniumEye\BlindDuel\CardData.cs" Link="CardData.cs" />
+    <Compile Include="..\..\src\MillenniumEye\BlindDuel\PreviewData.cs" Link="PreviewData.cs" />
+    <Compile Include="..\..\src\MillenniumEye\BlindDuel\DuelReadingPolicy.cs" Link="DuelReadingPolicy.cs" />
+    <Compile Include="..\..\src\MillenniumEye\BlindDuel\DuelDetailBuffer.cs" Link="DuelDetailBuffer.cs" />
+    <Compile Include="..\..\src\MillenniumEye\BlindDuel\ActivationConfirmHandler.cs" Link="ActivationConfirmHandler.cs" />
+  </ItemGroup>
+</Project>
