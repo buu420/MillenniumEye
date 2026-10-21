@@ -33,6 +33,8 @@ public class MillenniumEyeCore : MonoBehaviour
 	public void Update()
 	{
 		SDLController.Update();
+		if (NavigationState.IsInDuel && Application.isFocused)
+			DuelEventDelivery.ObservePlayerInput(Input.anyKeyDown || SDLController.HasNewInput, Time.frameCount);
 		if (NavigationState.IsInDuel)
 		{
 			ActivationConfirmHandler.HandleInput();

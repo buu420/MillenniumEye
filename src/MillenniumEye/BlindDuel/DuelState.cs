@@ -57,6 +57,8 @@ public static class DuelState
 
 	public static void Clear()
 	{
+		DuelEventDelivery.Reset();
+		DuelHandReveals.Reset();
 		Cards.Clear();
 		IsShowingResult = false;
 		IsDuelLogOpen = false;

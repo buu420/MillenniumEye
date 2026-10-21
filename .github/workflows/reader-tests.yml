@@ -11,5 +11,6 @@ jobs:
         with:
           dotnet-version: '8.0.x'
       - run: dotnet run --project tests/ReaderTests/ReaderTests.csproj -c Release
+      - run: dotnet run --project tests/DuelEventTests/DuelEventTests.csproj -c Release
       - shell: pwsh
         run: ./tests/Install.Tests.ps1

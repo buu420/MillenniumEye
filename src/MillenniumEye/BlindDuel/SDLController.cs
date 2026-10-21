@@ -58,6 +58,10 @@ public static class SDLController
 
 	private static short _rightX;
 
+	private static short _leftX, _leftY;
+	private static uint _buttons;
+	public static bool HasNewInput { get; private set; }
+
 	private const short StickThreshold = 16000;
 
 	public static bool IsAvailable => _available && _gamepad != IntPtr.Zero;
@@ -143,6 +147,7 @@ public static class SDLController
 
 	public static void Update()
 	{
+		HasNewInput = false;
 		if (!_available)
 		{
 			return;
@@ -167,6 +172,17 @@ public static class SDLController
 				_lastRightX = _rightX;
 				_rightY = SDL_GetGamepadAxis(_gamepad, Axis.RightY);
 				_rightX = SDL_GetGamepadAxis(_gamepad, Axis.RightX);
+				short leftX = SDL_GetGamepadAxis(_gamepad, Axis.LeftX);
+				short leftY = SDL_GetGamepadAxis(_gamepad, Axis.LeftY);
+				uint buttons = 0;
+				for (int i = 0; i <= (int)Button.DPadRight; i++)
+					if (SDL_GetGamepadButton(_gamepad, (Button)i)) buttons |= 1u << i;
+				HasNewInput = (buttons & ~_buttons) != 0 || CrossedThreshold(leftX, _leftX) ||
+					CrossedThreshold(leftY, _leftY) || CrossedThreshold(_rightX, _lastRightX) ||
+					CrossedThreshold(_rightY, _lastRightY);
+				_buttons = buttons;
+				_leftX = leftX;
+				_leftY = leftY;
 			}
 		}
 		catch (Exception ex)
@@ -174,6 +190,10 @@ public static class SDLController
 			Log.Write("[SDL3] Update error: " + ex.Message);
 		}
 	}
+
+	private static bool CrossedThreshold(short current, short previous) =>
+		(current > StickThreshold && previous <= StickThreshold) ||
+		(current < -StickThreshold && previous >= -StickThreshold);
 
 	public static void Shutdown()
 	{

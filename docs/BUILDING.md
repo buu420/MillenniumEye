@@ -7,6 +7,7 @@ Master Duel, then launch once so MelonLoader generates current IL2CPP bindings.
 ```powershell
 dotnet build src/MillenniumEye/MillenniumEye.csproj -c Release '-p:GamePath=YOUR MASTER DUEL FOLDER'
 dotnet run --project tests/ReaderTests/ReaderTests.csproj -c Release
+dotnet run --project tests/DuelEventTests/DuelEventTests.csproj -c Release
 powershell -NoProfile -File tests/Install.Tests.ps1
 ```
 
@@ -24,7 +25,8 @@ dotnet run --project tools/Compatibility/Compatibility.csproj '-p:GamePath=YOUR 
 
 The offline reader project links production formatting, visibility-policy,
 detail-buffer and toggle code to minimal native boundary doubles. CI runs
-those checks and temporary-folder installation checks. CI does not compile
+those checks, production duel-event hooks against native boundary doubles,
+and temporary-folder installation checks. CI does not compile
 against proprietary game bindings or run Master Duel.
 
 `tools/Package.ps1` stages public payload files from the built DLL and verified
@@ -42,4 +44,4 @@ nmake /nologo CFLAGS="/nologo /O2 /EHsc /LD /MT /Gw /W4 /WL /D_EXPORTING /DUNICO
 
 JNI support is not enabled; this mod uses the C API. The complete Tolk source
 and official NVDA source archive are supplied as the release's
-`MillenniumEye-v0.1.0-third-party-source.zip` asset. See the notices for versions.
+`MillenniumEye-v0.1.1-third-party-source.zip` asset. See the notices for versions.

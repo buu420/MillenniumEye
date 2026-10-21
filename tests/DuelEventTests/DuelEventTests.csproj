@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
+  <ItemGroup>
+    <Using Remove="System.Collections.Generic" />
+    <Compile Include="../../src/MillenniumEye/BlindDuel/Speech.cs" Link="Speech.cs" />
+    <Compile Include="../../src/MillenniumEye/BlindDuel/DuelLogHelper.cs" Link="DuelLogHelper.cs" />
+    <Compile Include="../../src/MillenniumEye/BlindDuel/PatchDuelEventLogs.cs" Link="PatchDuelEventLogs.cs" Condition="Exists('../../src/MillenniumEye/BlindDuel/PatchDuelEventLogs.cs')" />
+    <Compile Include="../../src/MillenniumEye/BlindDuel/DuelEventReader.cs" Link="DuelEventReader.cs" Condition="Exists('../../src/MillenniumEye/BlindDuel/DuelEventReader.cs')" />
+    <Compile Include="../../src/MillenniumEye/BlindDuel/DuelEventDelivery.cs" Link="DuelEventDelivery.cs" Condition="Exists('../../src/MillenniumEye/BlindDuel/DuelEventDelivery.cs')" />
+    <Compile Include="../../src/MillenniumEye/BlindDuel/DuelHandReveals.cs" Link="DuelHandReveals.cs" Condition="Exists('../../src/MillenniumEye/BlindDuel/DuelHandReveals.cs')" />
+    <Compile Include="../../src/MillenniumEye/BlindDuel/PatchPublicHandEvents.cs" Link="PatchPublicHandEvents.cs" Condition="Exists('../../src/MillenniumEye/BlindDuel/PatchPublicHandEvents.cs')" />
+  </ItemGroup>
+</Project>

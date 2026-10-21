@@ -105,6 +105,17 @@ public static class Speech
 		}
 	}
 
+	public static void SayDuelEvent(string text)
+	{
+		if (string.IsNullOrWhiteSpace(text)) return;
+		text = TextUtil.StripTags(text).Trim();
+		if (string.IsNullOrWhiteSpace(text)) return;
+		// Do not deduplicate: the same monster can attack or be targeted again.
+		_lastSpoken = text;
+		ScreenReader.SayDuelEvent(text);
+		RecordHistory(text);
+	}
+
 	public static void SayTyping(string text)
 	{
 		if (!string.IsNullOrEmpty(text))

@@ -132,7 +132,7 @@ internal static class DuelLogHelper
 					Log.Write($"[DuelLog] Activates: {text} (owner={value}, cardTeam={showCardNameData.team}, opponent={flag}, cardid={cardid})");
 					DuelState.MessageJustAnnounced = true;
 					string text2 = (flag ? "Opponent activates" : "Activate");
-					Speech.SayImmediate(text2 + ": " + text);
+					Speech.SayDuelEvent(text2 + ": " + text);
 					break;
 				}
 			}

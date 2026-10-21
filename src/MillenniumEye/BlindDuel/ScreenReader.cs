@@ -101,7 +101,7 @@ public static class ScreenReader
 		}
 		try
 		{
-			Tolk_Output(text, interrupt: true);
+			Tolk_Output(text, interrupt: !NavigationState.IsInDuel || DuelEventDelivery.ShouldInterrupt(true));
 		}
 		catch (Exception ex)
 		{
@@ -131,8 +131,19 @@ public static class ScreenReader
 		}
 	}
 
+	public static void SayDuelEvent(string text)
+	{
+		if (string.IsNullOrEmpty(text) || !_initialized) return;
+		text = TextUtil.FixPlurals(text);
+		_lastMessage = text;
+		if (!Application.isFocused) return;
+		try { Tolk_Output(text, DuelEventDelivery.BeginEvent(Time.frameCount)); }
+		catch (Exception ex) { Log.Write("[ScreenReader] Event speech error: " + ex.Message); }
+	}
+
 	public static void Silence()
 	{
+		DuelEventDelivery.Reset();
 		if (!_initialized)
 		{
 			return;

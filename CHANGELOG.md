@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.1.1 — 2026-10-21 (beta)
+
+- Announce opponent attacks with the attacking monster and the attacked card's
+  field location. Direct attacks use the native life-target marker.
+- Announce effect targets on the field, in the graveyard and in other piles.
+  Non-target choices use "Selected" so they are not mistaken for targeting.
+- Read public hand additions at the move/reveal event, covering reveals before
+  and after the move and multiple added cards. Hidden identities stay unnamed.
+- Queue automatic response/focus speech behind activations and their targets.
+  Deliberate keyboard or controller navigation can interrupt normally.
+- Replace the restricted attack-selection callback and buffered-search-only
+  reader. Upgrade the recognized 0.1.0 installation in place with rollback.
+
+Verified offline against the supported game bindings. Live duel timing,
+audible event speech and controller play still need player validation.
+
 ## 0.1.0 — 2026-10-13 (beta)
 
 First Millennium Eye release, continuing RealAmethyst's BlindDuel. This version

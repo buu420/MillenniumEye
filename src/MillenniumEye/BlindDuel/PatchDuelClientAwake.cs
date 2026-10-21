@@ -17,6 +17,8 @@ internal class PatchDuelClientAwake
 		DuelLogReader.Reset();
 		DuelFieldNav.Reset();
 		ActivationConfirmHandler.Reset();
+		DuelEventDelivery.Reset();
+		DuelHandReveals.Reset();
 		try
 		{
 			EngineInitializer engineInitializer = __instance.engineInitializer;
@@ -35,14 +37,6 @@ internal class PatchDuelClientAwake
 		catch (Exception ex)
 		{
 			Log.Write("[DuelClientAwake] Focus subscribe failed: " + ex.Message);
-		}
-		try
-		{
-			AttackTargetHandler.Subscribe(__instance);
-		}
-		catch (Exception ex2)
-		{
-			Log.Write("[DuelClientAwake] Attack subscribe failed: " + ex2.Message);
 		}
 	}
 }
