@@ -1,6 +1,20 @@
 # Changelog
 
-## 0.1.1 — 2026-10-21 (beta)
+## 0.1.2 — 2026-10-21 (beta)
+
+Publishes the duel event repair after final native visibility review. The
+0.1.1 candidate was withdrawn before manager publication.
+
+- Announce a hand addition's name and source only when its native movement
+  record supplies a public identity. No engine identity lookup is performed.
+- Announce later hand reveals as “Opponent reveals NAME in hand”; do not link
+  them to earlier hidden draws or use a cached reveal to identify a hidden move.
+- Retain the attack/target/location and protected speech repairs described below.
+
+Offline and loader checks are recorded in the 0.1.2 audit. Live duel timing,
+audible event delivery and controller play remain unverified.
+
+## 0.1.1 — 2026-10-21 (withdrawn beta candidate)
 
 - Announce opponent attacks with the attacking monster and the attacked card's
   field location. Direct attacks use the native life-target marker.

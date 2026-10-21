@@ -35,17 +35,18 @@ target position -1; a direct/life attack uses a non-monster target and icon
 record. A failed lookup never becomes a direct attack. Target type 0 is an
 effect target; type 1 shares ACTION_LOCKON but is a non-target selection.
 
-The hand reader now uses AddCardMoveLog's exact CardStatus snapshots and native
-IsCardKnown(status) gate before any identity lookup. It also captures the native
-ACTION_SEARCH disclosure directly from BuffMoveData: that explicit public path
-can name a card even when both statuses are unknown and no HandOpen follows.
-Hidden moves retain only
-unique ID and location. Positive HandOpen modes supply a separate, public
+The hand reader captures AddCardMoveLog's movement locations and the native
+public identity directly from BuffMoveData, before grouping or delayed flush.
+It performs no engine identity lookup. This includes ACTION_SEARCH's explicit
+disclosure even when both statuses are unknown and no HandOpen follows.
+Hidden moves retain no historical origin/identity correlation. Positive HandOpen
+modes supply a separate, public
 ACTION_HANDOPEN record; zero closes a reveal and negative annotation modes
-are not spoken. No full-hand identity arrays are read. Correlation requires
-the same unique ID, owner and location, and resets on new activations, phase/
-turn changes, hand/deck shuffle/reset and duel boundaries. Hand shuffles break
-identity correlation with earlier hidden draws. Public additions no
+are not spoken before native log commitment. No full-hand identity arrays are
+read. Later reveals say only which hand card is revealed; private unique IDs
+never identify an earlier hidden draw or source zone. Public-record deduplication
+resets on new activations, phase/turn changes, hand/deck shuffle/reset and duel
+boundaries. Public additions no
 longer wait for PushBuff, which can merge or delay records.
 
 Critical speech interrupts stale focus once; later targets and automatic
@@ -56,7 +57,7 @@ the same policy so a target cannot cut off the activating card's name.
 
 The supported native binary hash was rechecked for the October 21 repair.
 The current build, offline event checks and deployment audit are recorded in
-`docs/releases/v0.1.1-publication-audit.md`. The initial checks below describe
+`docs/releases/v0.1.2-publication-audit.md`. The initial checks below describe
 0.1.0 and do not establish live behavior of the new event hooks.
 
 - Full renamed mod build: zero warnings/errors.

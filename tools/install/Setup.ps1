@@ -35,7 +35,7 @@ function Get-MillenniumEyePackage {
     param([string]$PackageRoot)
     $metaPath = Get-MillenniumEyePath $PackageRoot 'Accessibility/MillenniumEye/release.json'
     $meta = Get-Content -LiteralPath $metaPath -Raw | ConvertFrom-Json
-    if ($meta.version -ne '0.1.1' -or @($meta.files).Count -eq 0) { throw 'Unsupported Millennium Eye package metadata.' }
+    if ($meta.version -ne '0.1.2' -or @($meta.files).Count -eq 0) { throw 'Unsupported Millennium Eye package metadata.' }
     $seen = @{}
     foreach ($entry in $meta.files) {
         $path = Get-MillenniumEyePath $PackageRoot $entry.path
@@ -62,7 +62,7 @@ function Assert-MillenniumEyeInstall {
     if (-not (Test-Path -LiteralPath $exe -PathType Leaf) -or
         -not (Test-Path -LiteralPath $assembly -PathType Leaf) -or
         (Get-FileHash -LiteralPath $assembly -Algorithm SHA256).Hash -ne $meta.gameSha256) {
-        throw 'Unsupported game build. Millennium Eye 0.1.1 supports Master Duel 2.8.0 / Steam build 24462996. No files were changed.'
+        throw 'Unsupported game build. Millennium Eye 0.1.2 supports Master Duel 2.8.0 / Steam build 24462996. No files were changed.'
     }
     $loader = Get-MillenniumEyePath $GameRoot 'version.dll'
     if (Test-Path -LiteralPath $loader) {

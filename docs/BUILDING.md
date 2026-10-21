@@ -44,4 +44,4 @@ nmake /nologo CFLAGS="/nologo /O2 /EHsc /LD /MT /Gw /W4 /WL /D_EXPORTING /DUNICO
 
 JNI support is not enabled; this mod uses the C API. The complete Tolk source
 and official NVDA source archive are supplied as the release's
-`MillenniumEye-v0.1.1-third-party-source.zip` asset. See the notices for versions.
+`MillenniumEye-v0.1.2-third-party-source.zip` asset. See the notices for versions.

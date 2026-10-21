@@ -11,7 +11,7 @@ if (Test-Path -LiteralPath $output) { throw 'Use a new, empty output directory; 
 $mod = Join-Path $repo 'src\MillenniumEye\bin\Release\net6.0\MillenniumEye.dll'
 if (-not (Test-Path -LiteralPath $mod)) { throw 'Build the release DLL first.' }
 $gameHash = (Get-FileHash -LiteralPath (Join-Path $GamePath 'GameAssembly.dll') -Algorithm SHA256).Hash
-if ($gameHash -ne 'CA24A284A86DC394F6B0CBEAAD455D29E5F6B95FC8DB8FC42812B29DE3C7620C') { throw 'Unsupported game build for 0.1.1 packaging.' }
+if ($gameHash -ne 'CA24A284A86DC394F6B0CBEAAD455D29E5F6B95FC8DB8FC42812B29DE3C7620C') { throw 'Unsupported game build for 0.1.2 packaging.' }
 $payload = Join-Path $output 'standalone\files'
 $support = Join-Path $payload 'Accessibility\MillenniumEye'
 New-Item -ItemType Directory -Path (Join-Path $payload 'Mods'),$support | Out-Null
@@ -32,10 +32,10 @@ $files = @(Get-ChildItem -LiteralPath $payload -File -Recurse | Sort-Object Full
     [pscustomobject]@{path=$_.FullName.Substring($prefix.Length).Replace('\','/');sha256=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash}
 })
 $metadata = [ordered]@{
-    version='0.1.1'
+    version='0.1.2'
     gameSha256=$gameHash
     loaderSha256='8F329F102F2A8323816206C858C8117AEB8EE9B8502056997E849B61B4D8E0B7'
-    legacyModHashes=@('A68D718166F6A0CA8EE639B456A50EDA2DD0C90C4D680831F91107A5E9487F52','0FF15B0C7DC2F2EFA2C763754522975EA3E64AF5A41C0CFB03B976052356AF7A','47825D59E103615A9629603BD4DEB870C9A48E3613C75D1BEC4F471BC227781A')
+    legacyModHashes=@('A68D718166F6A0CA8EE639B456A50EDA2DD0C90C4D680831F91107A5E9487F52','0FF15B0C7DC2F2EFA2C763754522975EA3E64AF5A41C0CFB03B976052356AF7A','47825D59E103615A9629603BD4DEB870C9A48E3613C75D1BEC4F471BC227781A','65A90A6076C400F66902DF9CF30B8B53B3180A697CAD556AEE0D32D2676D26E6')
     allowedExistingLibraries=@{
         'Tolk.dll'=@('C4FB11D3ED236F27532C7AB8370EBDE75133F322A069450F17E38D7548197225')
         'nvdaControllerClient64.dll'=@('796B9342EFF8AB3F99A9C551CA0D615AB7DE4944F99A69CE055F93A3ABEAF377')
@@ -46,5 +46,5 @@ $metadata = [ordered]@{
 $metadata | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath (Join-Path $support 'release.json') -Encoding UTF8
 . (Join-Path $PSScriptRoot 'install\Setup.ps1')
 $null = Get-MillenniumEyePackage -PackageRoot $payload
-Compress-Archive -Path (Join-Path $output 'standalone\*') -DestinationPath (Join-Path $output 'MillenniumEye-v0.1.1-beta-win-x64.zip') -CompressionLevel Optimal
+Compress-Archive -Path (Join-Path $output 'standalone\*') -DestinationPath (Join-Path $output 'MillenniumEye-v0.1.2-beta-win-x64.zip') -CompressionLevel Optimal
 Write-Output "Standalone package staged and checksummed at $output"

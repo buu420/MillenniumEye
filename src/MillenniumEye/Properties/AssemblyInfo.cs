@@ -9,13 +9,13 @@ using System.Security.Permissions;
 using MillenniumEye;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(MillenniumEyeMod), "Millennium Eye", "0.1.1", "buu420; RealAmethyst and BlindDuel contributors", "https://github.com/buu420/MillenniumEye")]
+[assembly: MelonInfo(typeof(MillenniumEyeMod), "Millennium Eye", "0.1.2", "buu420; RealAmethyst and BlindDuel contributors", "https://github.com/buu420/MillenniumEye")]
 [assembly: MelonGame("Konami Digital Entertainment Co., Ltd.", "masterduel")]
 [assembly: AssemblyCompany("buu420")]
 [assembly: AssemblyConfiguration("Release")]
 [assembly: AssemblyDescription("Millennium Eye accessibility mod for Yu-Gi-Oh! Master Duel; continuation of BlindDuel")]
-[assembly: AssemblyFileVersion("0.1.1.0")]
-[assembly: AssemblyInformationalVersion("0.1.1.recovered-from-340b0f1")]
+[assembly: AssemblyFileVersion("0.1.2.0")]
+[assembly: AssemblyInformationalVersion("0.1.2.recovered-from-340b0f1")]
 [assembly: AssemblyProduct("Millennium Eye")]
 [assembly: AssemblyTitle("Millennium Eye")]
-[assembly: AssemblyVersion("0.1.1.0")]
+[assembly: AssemblyVersion("0.1.2.0")]

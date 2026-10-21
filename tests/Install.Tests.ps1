@@ -31,7 +31,7 @@ function New-Fixture([string]$Name) {
     [IO.File]::WriteAllText((Join-Path $package 'Mods\BlindDuel.dll'), 'new mod fixture')
     [IO.File]::WriteAllText((Join-Path $package 'Tolk.dll'), 'new speech fixture')
     $meta = @{
-        version='0.1.1'; gameSha256=(Get-FileHash (Join-Path $game 'GameAssembly.dll')).Hash
+        version='0.1.2'; gameSha256=(Get-FileHash (Join-Path $game 'GameAssembly.dll')).Hash
         loaderSha256=(Get-FileHash (Join-Path $game 'version.dll')).Hash
         legacyModHashes=@(); allowedExistingLibraries=@{ 'Tolk.dll'=@() }
         files=@(

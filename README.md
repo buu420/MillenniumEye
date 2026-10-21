@@ -5,7 +5,7 @@ version of **Yu-Gi-Oh! Master Duel**. It continues **BlindDuel**, originally
 created by **RealAmethyst**, with contributions from the BlindDuel community.
 It reads native menus, selected cards and public duel information through Tolk.
 
-**[Download 0.1.1 beta](https://github.com/buu420/MillenniumEye/releases/tag/v0.1.1)**
+**[Download 0.1.2 beta](https://github.com/buu420/MillenniumEye/releases/tag/v0.1.2)**
 or install through Amethyst's Accessibility Mod Manager: add the **buu420**
 source under **Sources**, refresh it, and choose **Yu-Gi-Oh! Master Duel —
 Millennium Eye (Beta)**. The catalog is [buu-s-mods](https://github.com/buu420/buu-s-mods).
@@ -27,9 +27,9 @@ verified complete playthrough.
   field location, including direct attacks.
 - Read effect targets with their field zone or pile location, including the
   graveyard. Non-target choices are spoken as "Selected".
-- Name public hand additions when the move or reveal occurs, including
-  multi-card searches and reveals before or after the move. Hidden draws and
-  unrevealed searches stay unidentified.
+- Name public hand additions from the native movement log, including multi-card
+  searches. Later hand reveals name the shown card without identifying an
+  earlier hidden move. Hidden draws and unrevealed searches stay unidentified.
 - Queue automatic response prompts behind critical duel information; deliberate
   navigation can interrupt the speech.
 - Read and cycle the game's visible activation-confirmation toggle using its
@@ -74,7 +74,7 @@ For the standalone ZIP:
 1. Close Master Duel and install the prerequisites above. The
    [MelonLoader 0.7.2 installer](https://github.com/LavaGang/MelonLoader/releases/tag/v0.7.2)
    supplies the loader and its runtime.
-2. Extract `MillenniumEye-v0.1.1-beta-win-x64.zip` into a separate folder.
+2. Extract `MillenniumEye-v0.1.2-beta-win-x64.zip` into a separate folder.
 3. Open PowerShell in that folder and run:
 
    ```powershell
@@ -86,7 +86,7 @@ For the standalone ZIP:
 
 The package deliberately replaces **`Mods/BlindDuel.dll` in place**. Its
 assembly is now named MillenniumEye and the loader displays Millennium Eye
-0.1.1. Keep one copy of the reader; a second `Mods/MillenniumEye.dll` would
+0.1.2. Keep one copy of the reader; a second `Mods/MillenniumEye.dll` would
 duplicate hooks. Recognized older BlindDuel builds are backed up. Unknown
 readers or shared libraries are preserved and reported as conflicts.
 
@@ -98,7 +98,7 @@ Saves, game settings and loader preferences are outside the replacement list.
 
 ## Validation and reports
 
-The 0.1.1 repair has offline event regressions in addition to the original
+The 0.1.2 repair has offline event regressions in addition to the original
 21 reader checks and current binding checks. The 25 installation checks cover backup,
 restoration, duplicate readers, unsupported builds, corrupt payloads and copy
 failure rollback and resuming an interrupted restore. Live duel features and

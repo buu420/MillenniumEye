@@ -4,9 +4,8 @@ using Il2CppYgomGame.Duel;
 
 namespace MillenniumEye;
 
-// The native move logger (0x44E470) uses these exact status snapshots and
-// IsCardKnown(status) gates before resolving a unique ID to a card identity.
-// Capture before mutable engine state advances; publish after the native handler.
+// Capture movement locations before mutable engine state advances. Identity
+// comes exclusively from the native public record passed to BuffMoveData.
 [HarmonyPatch(typeof(DuelLogController), "AddCardMoveLog")]
 internal static class PatchPublicCardMoveLog
 {
@@ -25,7 +24,7 @@ internal static class PatchPublicCardMoveLog
     {
         __state = new MoveSnapshot { Previous = _activeMove };
         _activeMove = __state;
-        if (!DuelEventReader.TryGetPerspective(out int me)) return;
+        if (!DuelEventReader.TryGetPerspective(out _)) return;
         try
         {
             var from = new Engine.CardStatus(param2);
@@ -36,11 +35,6 @@ internal static class PatchPublicCardMoveLog
             __state.From = from;
             __state.To = to;
             __state.Valid = true;
-            int publicId = 0;
-            if (to.Player != me && to.Position == Engine.PosHand &&
-                (EngineApiUtil.IsCardKnown(from) || EngineApiUtil.IsCardKnown(to)))
-                publicId = Engine.GetCardIDByUniqueID(uid);
-            __state.PublicId = publicId;
         }
         catch (Exception ex) { DuelHandReveals.Reset(); Log.Write("[HandEvent] Move snapshot failed: " + ex.Message); }
     }
@@ -60,27 +54,33 @@ internal static class PatchPublicCardMoveLog
         if (__state != null && ReferenceEquals(_activeMove, __state)) _activeMove = __state.Previous;
     }
 
-    internal static void CapturePublicSearch(ShowActionData action)
+    internal static void CapturePublicMove(ShowActionData action)
     {
         var move = _activeMove;
-        if (move == null || !move.Valid || !action.datac.isActDataShow ||
-            action.datac.acttype != LOGACTIONTYPE.ACTION_SEARCH ||
-            !action.datal.isCardDataShow || !action.datar.isCardDataShow || action.datar.cardid <= 0) return;
+        if (move == null || !move.Valid || move.To.Position != Engine.PosHand || !action.datac.isActDataShow) return;
+        // Native draws use only datal. A positive native ID is already public.
+        if (action.datac.acttype == LOGACTIONTYPE.ACTION_DRAW && action.datal.isCardDataShow &&
+            action.datal.cardid > 0 && action.datal.owner == move.To.Player && action.datal.position == move.To.Position)
+        {
+            move.PublicId = action.datal.cardid;
+            return;
+        }
+        if (!action.datal.isCardDataShow || !action.datar.isCardDataShow || action.datar.cardid <= 0) return;
         if (action.datal.owner == move.From.Player && action.datal.position == move.From.Position &&
             action.datar.owner == move.To.Player && action.datar.position == move.To.Position)
             move.PublicId = action.datar.cardid;
     }
 }
 
-// ACTION_SEARCH is explicitly public in AddCardMoveLog even when neither
-// status passes IsCardKnown. Capture that sanitized record, not a raw engine ID.
+// Includes SEARCH's explicit disclosure and all other positive public moves.
+// Per-card capture happens before native multi-card grouping or delayed flush.
 [HarmonyPatch(typeof(DuelLogController), "BuffMoveData")]
 internal static class PatchPublicSearchRecord
 {
     [HarmonyPrefix]
     private static void Prefix(ShowActionData actionData)
     {
-        try { PatchPublicCardMoveLog.CapturePublicSearch(actionData); }
+        try { PatchPublicCardMoveLog.CapturePublicMove(actionData); }
         catch (Exception ex) { Log.Write("[HandEvent] Public search record failed: " + ex.Message); }
     }
 }

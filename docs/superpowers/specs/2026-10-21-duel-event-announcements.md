@@ -13,6 +13,11 @@ announcement may say "Target" without guessing which effect caused it.
 Include card location so identical cards in different field zones can be
 distinguished. Preserve every target in multi-card events.
 
+An addition's origin requires a public identity in that movement's native log
+record. A later reveal names the currently revealed hand card only. Never
+attribute an earlier hidden draw or move through its private unique ID, or
+identify a hidden move using a previously cached reveal.
+
 Automatic focus speech must queue behind critical event information. Explicit
 player navigation may interrupt it. Reset pending speech policy and reveal
 correlation at duel boundaries. Deployment must preserve saves and settings.

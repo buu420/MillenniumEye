@@ -98,7 +98,12 @@ void HandPatch(string patch,DuelLogController log,int p1,int p2,int p3,Action na
 void Move(int uid,int from,int to,int publicId=0) {
     Engine.PublicIds[uid]=publicId;
     HandPatch("PatchPublicCardMoveLog",new(),uid,from,to,()=>{
-        if(nativeSearches.TryGetValue(uid,out var record)) {
+        bool explicitRecord=nativeSearches.TryGetValue(uid,out var record);
+        if(!explicitRecord && publicId>0) {
+            var source=new Engine.CardStatus(from); var destination=new Engine.CardStatus(to);
+            record=Action(LOGACTIONTYPE.ACTION_ADDCARD,Card(publicId,source.Player,source.Position),Card(publicId,destination.Player,destination.Position));
+        }
+        if(explicitRecord || publicId>0) {
             var patch=typeof(Speech).Assembly.GetType("MillenniumEye.PatchPublicSearchRecord");
             patch?.GetMethod("Prefix",BindingFlags.Static|BindingFlags.NonPublic)?.Invoke(null,new object[]{record});
         }
@@ -112,10 +117,23 @@ void Reveal(int uid,int id,int pos=13,int mode=1,int owner=1) {
 }
 Test("Public deck-to-hand move speaks before buffered log commit",()=>{
     Move(1,Status(1,15,true),Status(1,13),301); Has("Opponent added Card 301 from deck to hand");
+    Check(Engine.IdReads==0,"Public native record triggered an unnecessary raw identity lookup");
 });
-Test("Hidden addition waits for its actual public reveal",()=>{
+Test("Public draw uses its left-only native card record; hidden draw stays unnamed",()=>{
+    nativeSearches[1]=Action(LOGACTIONTYPE.ACTION_DRAW,Card(0,1,13));
+    Move(1,Status(1,15),Status(1,13)); Check(ScreenReader.Output.Count==0,"Hidden draw named");
+    nativeSearches[2]=Action(LOGACTIONTYPE.ACTION_DRAW,Card(302,1,13));
+    Move(2,Status(1,15),Status(1,13)); Has("Opponent added Card 302 from deck to hand");
+    Check(Engine.IdReads==0,"Drew an identity from raw state");
+});
+Test("Public return from your graveyard preserves the source ownership",()=>{
+    nativeSearches[1]=Action(LOGACTIONTYPE.ACTION_RETURN,Card(301,0,16),Card(301,1,13));
+    Move(1,Status(0,16,true),Status(1,13)); Has("Opponent added Card 301 from your graveyard to hand");
+});
+Test("Hidden addition followed by a reveal does not identify the earlier hidden move",()=>{
     Move(1,Status(1,15),Status(1,13)); Check(Engine.IdReads==0,"Read a hidden identity");
-    Check(ScreenReader.Output.Count==0,"Unrevealed addition spoken"); Reveal(1,301); Has("Opponent added Card 301 from deck to hand");
+    Check(ScreenReader.Output.Count==0,"Unrevealed addition spoken"); Reveal(1,301); Has("Opponent reveals Card 301 in hand");
+    Check(!ScreenReader.Output.Any(x=>x.Text.Contains("from deck")),"Private UID attributed an earlier hidden move");
 });
 Test("Native public search is read with hidden statuses and no separate hand reveal",()=>{
     nativeSearches[1]=Action(LOGACTIONTYPE.ACTION_SEARCH,Card(301,1,15),Card(301,1,13));
@@ -129,13 +147,13 @@ Test("Native search rows cannot supply an unshown identity or another move's car
     Move(2,Status(1,15),Status(1,13));
     Check(ScreenReader.Output.Count==0,"Mismatched or unshown native identity disclosed");
 });
-Test("Reveal before movement is correlated by unique card, not current focus",()=>{
-    Reveal(1,301,15); Move(1,Status(1,15),Status(1,13)); Has("Opponent added Card 301 from deck to hand");
-    Check(Engine.IdReads==0,"Reveal correlation queried hidden state");
+Test("An earlier reveal cannot identify a later hidden movement",()=>{
+    Reveal(1,301); Move(1,Status(1,15),Status(1,13)); Has("Opponent reveals Card 301 in hand");
+    Check(!ScreenReader.Output.Any(x=>x.Text.Contains("from deck")),"Earlier public name linked to hidden move");
+    Check(Engine.IdReads==0,"Reveal reader queried hidden state");
 });
-Test("A reveal already reporting hand position precedes its visual move",()=>{
-    Reveal(1,301,13); Move(1,Status(1,15),Status(1,13));
-    Has("Opponent added Card 301 from deck to hand"); Check(Engine.IdReads==0,"Queried hidden state after public reveal");
+Test("A hand-open record outside the hand does not establish a visible hand reveal",()=>{
+    Reveal(1,301,15); Check(ScreenReader.Output.Count==0,"Off-hand identity spoken before a visible hand reveal");
 });
 Test("Several public additions, including identical names, remain distinct",()=>{
     Move(1,Status(1,15),Status(1,13)); Move(2,Status(1,15),Status(1,13));
@@ -153,8 +171,9 @@ Test("Close, negative annotation, unknown identity and your hand stay silent",()
     Reveal(1,301,13,0); Reveal(1,301,13,-1); Reveal(1,0); Reveal(1,301,13,1,0);
     Check(ScreenReader.Output.Count==0,"Nonpublic hand identity disclosed");
 });
-Test("A card leaving hand invalidates its pending addition",()=>{
-    Move(1,Status(1,15),Status(1,13)); Move(1,Status(1,13),Status(1,16)); Reveal(1,301);
+Test("A card leaving hand invalidates earlier reveal deduplication",()=>{
+    Reveal(1,301); Move(1,Status(1,13),Status(1,16)); Move(1,Status(1,16),Status(1,13)); Reveal(1,301);
+    Check(ScreenReader.Output.Count==2,"A later visible reveal was lost");
     Check(!ScreenReader.Output.Any(x=>x.Text.Contains("added Card")),"Stale move reused"); Has("reveals Card 301");
 });
 Test("Reordering a hand does not invent an addition",()=>{
@@ -163,11 +182,11 @@ Test("Reordering a hand does not invent an addition",()=>{
 });
 Test("New activation, phase and shuffle clear earlier reveal correlation",()=>{
     foreach(var view in new[]{Engine.ViewType.CardHappen,Engine.ViewType.PhaseChange,Engine.ViewType.TurnChange,Engine.ViewType.DeckShuffle,Engine.ViewType.DeckReset,Engine.ViewType.HandShuffle}) {
-        Reveal(1,301,15); ScreenReader.Output.Clear();
+        Reveal(1,301); ScreenReader.Output.Clear();
         var patch=typeof(Speech).Assembly.GetType("MillenniumEye.PatchPublicRevealBoundary");
         patch.GetMethod("Prefix",BindingFlags.Static|BindingFlags.NonPublic).Invoke(null,new object[]{(int)view});
-        Move(1,Status(1,15),Status(1,13));
-        Check(ScreenReader.Output.Count==0,"Stale reveal survived "+view);
+        Reveal(1,301);
+        Check(ScreenReader.Output.Count==1,"New reveal suppressed after "+view);
     }
 });
 Test("A hand shuffle prevents identifying an earlier hidden draw by unique ID",()=>{

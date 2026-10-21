@@ -7,7 +7,7 @@
 **Architecture:** Capture new records from the native duel log at their creation,
 retaining the event parameters needed to distinguish target types. Format immutable
 public snapshots, and protect event speech from automatic focus interruptions until
-the player navigates. Correlate reveal/move events only using native public evidence.
+the player navigates. Deduplicate public records without identifying hidden movements.
 
 **Tech Stack:** C#/.NET 6, Harmony, current Il2CppInterop bindings, Tolk; offline .NET 8 harness.
 
@@ -57,8 +57,8 @@ the native AddHandOpenLog/AddCardMoveLog/PushBuff evidence; DuelEventTests.
 **Files:** Version metadata, packaging scripts, release notes, validation audit.
 
 - [x] Review the whole repair, fix material findings and rerun affected checks.
-- [ ] Run install regressions, package and validate beta 0.1.1 with upgrade support
-  for the installed 0.1.0 reader. Back up and deploy only owned mod files.
+- [ ] Run install regressions, package and validate beta 0.1.2 with upgrade support
+  for the installed 0.1.0/0.1.1 readers. Back up and deploy only owned mod files.
 - [ ] Verify the deployed hashes and, where available, loader startup. Publish the
   source/package and manager update under the existing publication authorization.
   State any unperformed live duel/controller/speech tests explicitly.
