@@ -57,8 +57,8 @@ the native AddHandOpenLog/AddCardMoveLog/PushBuff evidence; DuelEventTests.
 **Files:** Version metadata, packaging scripts, release notes, validation audit.
 
 - [x] Review the whole repair, fix material findings and rerun affected checks.
-- [ ] Run install regressions, package and validate beta 0.1.2 with upgrade support
+- [x] Run install regressions, package and validate beta 0.1.2 with upgrade support
   for the installed 0.1.0/0.1.1 readers. Back up and deploy only owned mod files.
-- [ ] Verify the deployed hashes and, where available, loader startup. Publish the
+- [x] Verify the deployed hashes and, where available, loader startup. Publish the
   source/package and manager update under the existing publication authorization.
   State any unperformed live duel/controller/speech tests explicitly.
